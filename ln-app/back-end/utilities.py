@@ -1,3 +1,4 @@
+import json
 import qrcode
 import time
 
@@ -74,3 +75,52 @@ def get_total_eur():
 def reset():
     reset_total_money()
     return
+
+def create_lnurl_withdraw_link(title, api_key, withdraw_amount, uses=1, wait_time=0, is_unique=False, webhook_url=None):
+    balance = get_ln_wallet_balance(api_key)
+    if balance is None:
+        return None
+
+    if withdraw_amount > balance:
+        return None  # Withdrawal amount is greater than balance, cannot withdraw
+
+    url = "http://ln.pixeldev.eu:3007/withdraw/api/v1/links"
+    headers = {"X-Api-Key": api_key, "Content-Type": "application/json"}
+    body = {
+        "title": title,
+        "min_withdrawable": 1,
+        "max_withdrawable": withdraw_amount,
+        "uses": uses,
+        "wait_time": wait_time,
+        "is_unique": is_unique
+    }
+    if webhook_url is not None:
+        body["webhook_url"] = webhook_url
+        
+    response = requests.post(url, json=body, headers=headers)
+    if response.status_code == 201:
+        data = response.json()
+        return data["lnurl"]
+    else:
+        return None
+
+    
+def delete_lnurl_withdraw_link(the_hash, lnurl_id, invoice_key):
+    url = f"http://ln.pixeldev.eu:3007/withdraw/api/v1/links/{the_hash}/{lnurl_id}"
+    headers = {"X-Api-Key": invoice_key}
+    response = requests.delete(url, headers=headers)
+    if response.status_code == 200:
+        return True
+    else:
+        return False
+
+def get_ln_wallet_balance(api_key):
+    url = "http://ln.pixeldev.eu:3007/api/v1/wallet"
+    headers = {"X-Api-Key": api_key}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        return data["balance"]
+    else:
+        return None
+

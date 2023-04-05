@@ -61,5 +61,22 @@ def cancel():
     utilities.reset()
     return {'reset': True}
 
+@app.route('/create-lnurl-withdraw-link')
+def create_lnurl_withdraw_link_route():
+    title = "My Withdraw Link"
+    api_key = "3fb44827ec4a4a18ba5e9e3ee6e63070"
+    withdraw_amount = 10
+    uses = 1
+    wait_time = 0
+    is_unique = False
+    webhook_url = None
+
+    lnurl_withdraw_link = utilities.create_lnurl_withdraw_link(title, api_key, withdraw_amount, uses, wait_time, is_unique, webhook_url)
+    
+    if lnurl_withdraw_link is not None:
+        return lnurl_withdraw_link
+    else:
+        return {'Error': 'unable to create LNURL withdraw link'}
+
 if __name__ == '__main__':
     app.run(debug=True)
