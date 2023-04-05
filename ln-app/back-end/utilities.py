@@ -27,6 +27,7 @@ def get_btc_price():
     
     return btc_price_cache
 
+
 # check if lnurl withdraw is accepted
 def check_payment(self):
     start_time = time.time()

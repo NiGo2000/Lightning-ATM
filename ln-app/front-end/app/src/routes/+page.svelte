@@ -1,31 +1,26 @@
 <script lang="ts">
 	import { onMount } from "svelte";
     import { goto } from '$app/navigation';
-	import { API_URL } from "../lib/apiConfig";
-
-  	let totalEur = 0;
-
-  	async function getTotalPrice(): Promise<void> {
-    	const res = await fetch(`${API_URL}/total-price`);
-    	const data = await res.json();
-    	totalEur = data.total_price_eur;
-
-    	// Überprüfen, ob der Gesamtpreis größer als 0 ist und zur nächsten Seite navigieren
-    	if (totalEur > 0) {
-      	clearInterval(interval);
-		goto('/atm');
-    	}
-  	}
+	import { totalEur, getTotalPrice } from "./Container";
 
   	let interval: number;
 
-  	onMount(() => {
-    	interval = setInterval(() => {
-      	getTotalPrice();
-    	}, 1000);
+	onMount(() => {
+  		interval = setInterval(async () => {
+    		await getTotalPrice();
+    		checkTotalPrice();
+  		}, 1000);
 
-    	return () => clearInterval(interval);
-  	});  
+  		return () => clearInterval(interval);
+	});
+
+	function checkTotalPrice(): void {
+  		const price = $totalEur;
+  		if (price > 0) {
+    		clearInterval(interval);
+    		goto('/atm');
+  		}
+	}
 </script>
 
 <svelte:head>
@@ -35,18 +30,20 @@
 
 <section>
 	<h1>Welcome</h1>
-</section>
-
-<style>
+  </section>
+  
+  <style>
 	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  align-items: center;
+	  height: 100vh;
 	}
-
+  
 	h1 {
-		width: 100%;
+	  width: 100%;
+	  text-align: center;
 	}
-</style>
+  </style>
+  

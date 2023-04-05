@@ -1,20 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
-    import { writable } from "svelte/store";
-    import { API_URL } from "../../lib/apiConfig";
-  
-    // Erstellen der Stores für Satoshi und Euro
-    let totalSatoshi = writable(0);
-    let totalEur = writable(0);
-  
-    // Funktion zum Aktualisieren der Stores aus der API
-    async function getTotalPrice() {
-      const res = await fetch(`${API_URL}/total-price`);
-      const data = await res.json();
-      totalSatoshi.set(data.total_price_satoshi);
-      totalEur.set(data.total_price_eur);
-    }
+    import { totalSatoshi, totalEur, getTotalPrice } from "../Container";
   
     // Intervall zum Aktualisieren der Stores
     let interval: number;

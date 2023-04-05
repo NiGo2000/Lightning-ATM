@@ -2,13 +2,7 @@
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
   import { API_URL } from "../../lib/apiConfig";
-  let totalEur: number = 0;
-  
-  async function getTotalDeposits() {
-    const res = await fetch(`${API_URL}/total-deposits`);
-    const data = await res.json();
-    totalEur = data.total_deposits;
-  }
+  import { totalEur, getTotalPrice } from "../Container";
   
   function cancel() {
     fetch(`${API_URL}/cancel`)
@@ -26,7 +20,7 @@
   }
   
   onMount(async () => {
-    await getTotalDeposits();
+    await getTotalPrice();
     cancel();
   });
 </script>
@@ -45,5 +39,5 @@
 </style>
 
 <div class="center">
-  <h1>Es werden {totalEur} EUR ausgegeben!</h1>
+  <h1>Es werden {$totalEur} EUR ausgegeben!</h1>
 </div>

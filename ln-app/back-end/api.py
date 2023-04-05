@@ -3,3 +3,4 @@ def bitcoinApi(cg):
     data = cg.get_price(ids='bitcoin', vs_currencies='eur')
     btc_price = float(data["bitcoin"]["eur"])
     return btc_price
+

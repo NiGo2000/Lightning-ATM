@@ -38,7 +38,9 @@
       <p class="scan-message">Bitte scannen Sie den QR-Code</p>
     </div>
   {:else}
-    <p>Loading image...</p>
+    <div class="center-container">
+      <p>Loading image...</p>
+    </div>
   {/if}
 </main>
 
@@ -60,4 +62,12 @@
     font-size: 1.2rem;
     text-align: center;
   }
+
+  .center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
 </style>
+

@@ -8,20 +8,16 @@ import utilities
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/total-deposits')
-def total_deposits():
-    # Hier wird der Gesamt-Einzahlungsbetrag aus der Datenbank abgerufen
-    # und als JSON-Objekt zurückgegeben
-    total_eur = utilities.get_total_eur()
-    return {'total_deposits': total_eur}
-    
 @app.route('/total-price')
 def total_price():
-    # Hier wird der Gesamt-Preis in Satoshi aus der Datenbank abgerufen
-    # und als JSON-Objekt zurückgegeben
-    total_eur = utilities.get_total_eur()
-    total_satoshi = utilities.calculate_satoshi(total_eur)
-    return {'total_price_satoshi': total_satoshi, 'total_price_eur': total_eur}
+    try:
+        # get the total price in Satoshi from the database
+        total_eur = utilities.get_total_eur()
+        total_satoshi = utilities.calculate_satoshi(total_eur)
+        return {'total_price_satoshi': total_satoshi, 'total_price_eur': total_eur, 'error_message': None}
+    except Exception as e:
+        error_message = "Error fetching total price from database: {}".format(str(e))
+        return {'total_price_satoshi': None, 'total_price_eur': None, 'error_message': error_message}
 
 
 @app.route('/qr-code')
