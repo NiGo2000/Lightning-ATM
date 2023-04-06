@@ -78,5 +78,16 @@ def create_lnurl_withdraw_link_route():
     else:
         return {'Error': 'unable to create LNURL withdraw link'}
 
+
+@app.route('/balance')
+def balance():
+    api_key = '81fb8d49c9bc4cd19dfd2b1ef8eea36f'
+    balance = utilities.get_ln_wallet_balance(api_key)
+    if balance is not None:
+        return {'Balance': balance}
+    else:
+        return "Failed to retrieve balance"
+
+
 if __name__ == '__main__':
     app.run(debug=True)
