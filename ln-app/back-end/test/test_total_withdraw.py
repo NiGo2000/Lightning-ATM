@@ -1,6 +1,6 @@
 import requests
 
-url = 'http://localhost:5000/create-lnurl-withdraw-link'
+url = 'http://localhost:5000/generate-lnurl-withdraw-link'
 
 response = requests.get(url)
 

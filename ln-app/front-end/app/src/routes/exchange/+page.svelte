@@ -6,24 +6,31 @@
   let imageSrc: string;
 
   async function getImage() {
+    // Fetch the QR code image from the API endpoint
     const response = await fetch(`${API_URL}/qr-code`);
-    const blob = await response.blob();
-    imageSrc = URL.createObjectURL(blob);
+    const blob = await response.blob();  // Convert the response to a Blob object
+    imageSrc = URL.createObjectURL(blob);  // Create an object URL from the Blob
   }
 
   async function checkPaymentStatus() {
+    // Fetch the payment status from the API endpoint
     const response = await fetch(`${API_URL}/check-payment`);
-    const data = await response.json();
+    const data = await response.json();  // Parse the response as JSON
     if (data.check_payment) {
+      // If 'check_payment' property is truthy in the response data
+      // Navigate to the '/goodbye' page
       goto("/goodbye");
     } else {
+      // If 'check_payment' property is falsy in the response data
+      // Set a timeout of 1000 milliseconds (1 second)
+      // Then call the 'checkPaymentStatus' function again
       setTimeout(checkPaymentStatus, 1000);
     }
   }
 
   onMount(() => {
-    getImage();
-    checkPaymentStatus();
+    getImage(); // Call the 'getImage' function to fetch the QR code image
+    checkPaymentStatus(); // Call the 'checkPaymentStatus' function to check the payment status
   });
 </script>
 

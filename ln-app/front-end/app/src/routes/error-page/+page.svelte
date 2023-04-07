@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
   import { getTotalPrice } from "../Container";
   import { goto } from "$app/navigation";
-  import { API_URL } from "../../lib/apiConfig";
 
   let hasConnection = false;
 
@@ -25,8 +24,24 @@
   });
 </script>
 
+<style>
+  /* Styles for centring the content */
+  .center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  .error-container {
+    text-align: center;
+  }
+</style>
 
-  <h1>Error</h1>
-  <p>There is an error connecting to the API.</p>
-  <p>Please check your internet connection and try again.</p>
-  <p>Connecting to API...</p>
+<div class="center-container">
+  <div class="error-container">
+    <h1>Error</h1>
+    <p>There is an error connecting to the API.</p>
+    <p>Please check your internet connection and try again.</p>
+    <p>Connecting to API...</p>
+  </div>
+</div>

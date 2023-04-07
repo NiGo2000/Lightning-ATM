@@ -22,22 +22,22 @@ def total_price():
 
 @app.route('/qr-code')
 def qr_code():
-    # Hier werden die notwendigen Parameter aus der Anfrage abgerufen
+    # Here the necessary parameters are retrieved from the request
     satoshis = request.args.get('satoshis')
     qr_size = request.args.get('qr_size', default=200, type=int)
 
-    # Hier wird der Lightning Invoice generiert
-    #lightning_invoice = utilities.generate_lightning_invoice(satoshis)
+    # The Lightning Invoice is generated here
+    #lnurl_withdraw_link = utilities.create_lnurl_withdraw_link(satoshis)
 
-    # Hier wird der QR-Code generiert
-    #qr_text = 'lightning:' + lightning_invoice
+    # The QR code is generated here
+    #qr_text = 'lightning:' + lnurl_withdraw_link
 
     qr_text = "google.de"
     qr = qrcode.QRCode(version=None, box_size=10, border=4)
     qr.add_data(qr_text)
     qr.make(fit=True)
 
-    # Hier wird das generierte Bild als Datei zurückgegeben
+    # Here the generated image is returned as a file
     img = qr.make_image(fill_color="black", back_color="white")
     buffer = BytesIO()
     img.save(buffer, format='PNG')
@@ -47,7 +47,7 @@ def qr_code():
 
 @app.route('/check-payment')
 def check_payment():
-    # Hier wird der Wahrheitswert für check_payment aus der Datenbank abgerufen
+    # Here the truth value for check_payment is retrieved from the database
     start_time = time.time()
     while True:
         elapsed_time = time.time() - start_time
@@ -63,30 +63,15 @@ def cancel():
 
 @app.route('/create-lnurl-withdraw-link')
 def create_lnurl_withdraw_link_route():
-    title = "My Withdraw Link"
-    api_key = "3fb44827ec4a4a18ba5e9e3ee6e63070"
-    withdraw_amount = 10
-    uses = 1
-    wait_time = 0
-    is_unique = False
-    webhook_url = None
 
-    lnurl_withdraw_link = utilities.create_lnurl_withdraw_link(title, api_key, withdraw_amount, uses, wait_time, is_unique, webhook_url)
+    withdraw_amount = 100
+
+    lnurl_withdraw_link = utilities.create_lnurl_withdraw_link(withdraw_amount)
     
     if lnurl_withdraw_link is not None:
         return lnurl_withdraw_link
     else:
         return {'Error': 'unable to create LNURL withdraw link'}
-
-
-@app.route('/balance')
-def balance():
-    api_key = '81fb8d49c9bc4cd19dfd2b1ef8eea36f'
-    balance = utilities.get_ln_wallet_balance(api_key)
-    if balance is not None:
-        return {'Balance': balance}
-    else:
-        return "Failed to retrieve balance"
 
 
 if __name__ == '__main__':

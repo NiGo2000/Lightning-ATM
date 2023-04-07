@@ -4,3 +4,7 @@ def bitcoinApi(cg):
     btc_price = float(data["bitcoin"]["eur"])
     return btc_price
 
+LNURL = "https://ln.pixeldev.eu:3007"
+
+
+

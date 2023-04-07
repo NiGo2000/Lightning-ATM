@@ -1,13 +1,13 @@
 import { writable } from "svelte/store";
 import { API_URL } from "../lib/apiConfig";
 
-// Erstellen der Stores für Satoshi und Euro
+// stores Satoshi and Euro
 export const totalSatoshi = writable(0);
 export const totalEur = writable(0);
 
 let hasError = false;
 
-// Funktion zum Aktualisieren der Stores aus der API
+// Function to update the stores from the API
 export async function getTotalPrice() {
   try {
     const res = await fetch(`${API_URL}/total-price`);

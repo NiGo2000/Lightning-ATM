@@ -6,16 +6,19 @@
   
   function cancel() {
     fetch(`${API_URL}/cancel`)
-      .then(response => response.json())
+      .then(response => response.json()) // Parse the response as JSON
       .then(data => {
         if (data.reset) {
+          // If 'reset' property is present in the response data
+          // Set a timeout of 2000 milliseconds (2 seconds)
+          // Then navigate to the '/' page
           setTimeout(() => {
             goto('/');
           }, 2000);
         }
       })
       .catch(error => {
-        console.error(error);
+        console.error(error); // Log any errors that occur during fetch request
       });
   }
   

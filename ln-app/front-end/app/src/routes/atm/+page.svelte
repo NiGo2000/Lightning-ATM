@@ -3,7 +3,7 @@
     import { onMount } from "svelte";
     import { totalSatoshi, totalEur, getTotalPrice } from "../Container";
   
-    // Intervall zum Aktualisieren der Stores
+    // Interval for updating the stores
     let interval: number;
     onMount(() => {
       interval = setInterval(() => {
@@ -13,7 +13,7 @@
       return () => clearInterval(interval);
     });
   
-    // Weiterleiten auf andere Seiten bei Klick auf die Buttons
+    // Forwarding to other pages by clicking on the buttons
     function handleCancel() {
 	  goto('/refund');
     }
