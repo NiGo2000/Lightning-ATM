@@ -38,27 +38,8 @@
 	<title>Exchange</title>
 </svelte:head>
 
-<main>
-  {#if imageSrc}
-    <div class="container">
-      <img src={imageSrc} alt="QR code" class="qr-code" />
-      <p class="scan-message">Bitte scannen Sie den QR-Code</p>
-    </div>
-  {:else}
-    <div class="center-container">
-      <p>Loading image...</p>
-    </div>
-  {/if}
-</main>
-
 <style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
+  @import '../styles.css';
 
   .qr-code {
     max-width: 50%;
@@ -69,12 +50,18 @@
     font-size: 1.2rem;
     text-align: center;
   }
-
-  .center-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
 </style>
+
+<main>
+  {#if imageSrc}
+    <div class="container">
+      <img src={imageSrc} alt="QR code" class="qr-code" />
+      <p class="scan-message">Bitte scannen Sie den QR-Code</p>
+    </div>
+  {:else}
+    <div class="center">
+      <p>Loading image...</p>
+    </div>
+  {/if}
+</main>
 

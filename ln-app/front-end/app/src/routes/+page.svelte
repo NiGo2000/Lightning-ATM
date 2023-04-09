@@ -30,22 +30,12 @@
 	<meta name="description" content="Welcome Screen for ATM app" />
 </svelte:head>
 
-<section>
+  
+<style>
+	@import './styles.css';
+</style>
+
+<div class="center">
 	<h1>Welcome</h1>
-  </section>
-  
-  <style>
-	section {
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: center;
-	  align-items: center;
-	  height: 100vh;
-	}
-  
-	h1 {
-	  width: 100%;
-	  text-align: center;
-	}
-  </style>
+</div>
   

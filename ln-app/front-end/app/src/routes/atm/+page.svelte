@@ -27,6 +27,10 @@
 	<title>ATM</title>
 </svelte:head>
 
+<style>
+  @import '../styles.css';
+</style>
+
 <div class="container">
   <h1 style="text-align:center;">Lightning ATM</h1>
   <p>Total Satoshi: {$totalSatoshi}</p>
@@ -37,12 +41,3 @@
   </div>
 </div>
 
-<style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-</style>

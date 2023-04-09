@@ -32,19 +32,14 @@
 	<title>Goodbye</title>
 </svelte:head>
 
-<main class="center-container">
+<style>
+	@import '../styles.css';
+</style>
+
+<div class="center">
   {#if $totalSatoshi !== null}
     <h1>Die Überweisung von {$totalSatoshi} Satoshi im Wert von {$totalEur} € ist bestätigt!</h1>
   {:else}
     <p>Loading...</p>
   {/if}
-</main>
-
-<style>
-  .center-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-</style>
+</div>

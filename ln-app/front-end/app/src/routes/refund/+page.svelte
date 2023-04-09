@@ -33,12 +33,7 @@
 </svelte:head>
 
 <style>
-  .center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+	@import './styles.css';
 </style>
 
 <div class="center">

@@ -25,19 +25,15 @@
 </script>
 
 <style>
-  /* Styles for centring the content */
-  .center-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
+  @import '../styles.css';
+
   .error-container {
     text-align: center;
   }
+  
 </style>
 
-<div class="center-container">
+<div class="center">
   <div class="error-container">
     <h1>Error</h1>
     <p>There is an error connecting to the API.</p>
