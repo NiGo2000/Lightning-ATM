@@ -33,7 +33,7 @@
 </svelte:head>
 
 <style>
-	@import './styles.css';
+	@import '../styles.css';
 </style>
 
 <div class="center">

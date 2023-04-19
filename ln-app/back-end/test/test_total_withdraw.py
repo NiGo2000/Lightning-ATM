@@ -1,6 +1,7 @@
 import requests
 
-url = 'http://localhost:5000/generate-lnurl-withdraw-link'
+satoshis = 100
+url = 'http://localhost:5000/create-lnurl-withdraw-link?satoshis=' + str(satoshis)
 
 response = requests.get(url)
 

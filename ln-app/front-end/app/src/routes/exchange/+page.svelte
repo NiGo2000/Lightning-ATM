@@ -2,28 +2,46 @@
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
   import { API_URL } from "../../lib/apiConfig";
+  import { totalSatoshi, checkWithdrawalLink, lnurlw } from "../Container";
+
 
   let imageSrc: string;
+  let lnurl: string;
 
   async function getImage() {
+
+    const withdrawalLink = await checkWithdrawalLink(); // Call the 'checkWithdrawalLink' function to get the withdrawal link
+    if (withdrawalLink !== false) {
+      lnurl = $lnurlw;
+    } else {
+      const totalSatoshiValue = $totalSatoshi;
+      const totalSatoshiString = totalSatoshiValue.toString();
+      const response_lnurl = await fetch(`${API_URL}/create-lnurl-withdraw-link?satoshis=${totalSatoshiString}`);
+      const data = await response_lnurl.json();
+      lnurl = data.lnurl;
+      if (data.error == "balance is too low"){
+        goto("/balance-error");
+      }
+    }
+
     // Fetch the QR code image from the API endpoint
-    const response = await fetch(`${API_URL}/qr-code`);
-    const blob = await response.blob();  // Convert the response to a Blob object
+    const response = await fetch(`${API_URL}/qr-code?lnurl=${lnurl}`);
+    const blob = await response.blob(); // Convert the response to a Blob object
     imageSrc = URL.createObjectURL(blob);  // Create an object URL from the Blob
   }
 
   async function checkPaymentStatus() {
-    // Fetch the payment status from the API endpoint
-    const response = await fetch(`${API_URL}/check-payment`);
+    // Fetch the payment status from the API endpoint 
+    const response = await fetch(`${API_URL}/check-payment?lnurl=${lnurl}`);
     const data = await response.json();  // Parse the response as JSON
-    if (data.check_payment) {
-      // If 'check_payment' property is truthy in the response data
-      // Navigate to the '/goodbye' page
+    if (data.payment === 'True') {  // Überprüfen Sie, ob das 'payment'-Eigenschaft den Wert 'True' hat
+      // Wenn das 'payment'-Eigenschaft in den Response-Daten den Wert 'True' hat
+      // Navigieren Sie zur '/goodbye'-Seite
       goto("/goodbye");
     } else {
-      // If 'check_payment' property is falsy in the response data
-      // Set a timeout of 1000 milliseconds (1 second)
-      // Then call the 'checkPaymentStatus' function again
+      // Wenn das 'payment'-Eigenschaft in den Response-Daten den Wert 'False' hat
+      // Setzen Sie einen Timeout von 1000 Millisekunden (1 Sekunde)
+      // Rufen Sie dann erneut die 'checkPaymentStatus'-Funktion auf
       setTimeout(checkPaymentStatus, 1000);
     }
   }

@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { onMount } from "svelte";
     import { goto } from '$app/navigation';
-	import { totalEur, getTotalPrice } from "./Container";
+	import { totalEur, getTotalPrice, checkWithdrawalLink } from "./Container";
 
 	let interval: number;  // Declare a variable to store the interval ID
 
-	onMount(() => {
+	onMount(async () => {
+		const withdrawalLink = await checkWithdrawalLink(); // Call a function to check the withdrawal link on mount
+        if (withdrawalLink !== false) { // If withdrawal link is not false, navigate to the '/exchange' page with query params
+            goto(`/exchange`);
+        }
     	// Set up a recurring interval function on mount
     	interval = setInterval(async () => {
         	await getTotalPrice();  // Call a function to get the total price

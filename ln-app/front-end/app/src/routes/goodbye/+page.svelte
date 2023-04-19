@@ -2,7 +2,7 @@
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
     import { API_URL } from "../../lib/apiConfig";
-    import { totalSatoshi, totalEur, getTotalPrice } from "../Container";
+    import { totalSatoshi, getTotalPrice, checkWithdrawalLink } from "../Container";
 
     function cancel() {
       fetch(`${API_URL}/cancel`)
@@ -23,7 +23,10 @@
       }
 
     onMount(async () => {
-      await getTotalPrice();
+      const withdrawalLink = await checkWithdrawalLink();
+      if (withdrawalLink !== false) {
+            await getTotalPrice();
+        }
       cancel();
     });
 </script>
@@ -38,7 +41,7 @@
 
 <div class="center">
   {#if $totalSatoshi !== null}
-    <h1>Die Überweisung von {$totalSatoshi} Satoshi im Wert von {$totalEur} € ist bestätigt!</h1>
+    <h1>Die Überweisung von {$totalSatoshi} Satoshi ist bestätigt!</h1>
   {:else}
     <p>Loading...</p>
   {/if}

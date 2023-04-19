@@ -4,6 +4,7 @@ import { API_URL } from "../lib/apiConfig";
 // stores Satoshi and Euro
 export const totalSatoshi = writable(0);
 export const totalEur = writable(0);
+export const lnurlw = writable('');
 
 let hasError = false;
 
@@ -41,6 +42,27 @@ export async function getTotalPrice() {
 
     // redirect to the error page
     window.location.href = "/error-page";
+  }
+}
+
+export async function checkWithdrawalLink(){
+  try {
+      const response = await fetch(`${API_URL}/check-withdrawal-link`);
+      if (response.status === 200) {
+          const link = await response.json();
+          if (link === false) {
+              return false;
+          } else {
+              totalSatoshi.set(link.max_withdrawable)
+              lnurlw.set(link["lnurl"])
+          }
+      } else {
+          console.error(`Error: ${response.status}`);
+          return false;
+      }
+  } catch (error) {
+      console.error(`Error: ${error}`);
+      return false;
   }
 }
 

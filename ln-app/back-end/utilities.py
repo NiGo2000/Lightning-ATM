@@ -49,11 +49,6 @@ def calculate_satoshi(eur_price):
     satoshi_price = int(eur_price * 1e8 / btc_price)
     return satoshi_price
 
-# get invoice for lnurl withdraw
-def generate_invoice(eur_price):
-    invoice = "google.de"
-    return invoice
-
 # generate qr code with invoice
 def generate_qr_code(invoice, qr_label):
     # creation of the QR code
@@ -80,10 +75,12 @@ def reset():
 
 def create_lnurl_withdraw_link(withdraw_amount):
     # Load environment variables
-    load_dotenv()
+    load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
     api_key = os.getenv("API_KEY")  # Retrieve API key from environment variable
-    balance = get_ln_wallet_balance(api_key)  # Retrieve LN wallet balance using API key
-
+    LNURL = os.getenv("LNURL")
+    balance = get_ln_wallet_balance(api_key, LNURL)  # Retrieve LN wallet balance using API key
+    balance = balance / 1000
+    
     # Check if balance is too low
     if balance is None:
         print("Balance is too low")
@@ -95,10 +92,13 @@ def create_lnurl_withdraw_link(withdraw_amount):
         return None
 
     # Construct URL for withdrawal link creation
-    url = api.LNURL + "/withdraw/api/v1/links"
+    url = LNURL + "/withdraw/api/v1/links"
 
     # Define headers for the POST request
-    headers = {"X-Api-Key": api_key, "Content-Type": "application/json"}
+    headers = {
+    "Content-type": "application/json",
+    "X-Api-Key": api_key
+    }
 
     # Get the current date and time
     now = datetime.datetime.now()
@@ -113,7 +113,7 @@ def create_lnurl_withdraw_link(withdraw_amount):
         "max_withdrawable": withdraw_amount,
         "uses": 1,
         "wait_time": 1,
-        "is_unique": True,
+        "is_unique": False,
         "webhook_url": None
     }
 
@@ -123,15 +123,18 @@ def create_lnurl_withdraw_link(withdraw_amount):
     # Check if response status code indicates successful creation of withdrawal link
     if response.status_code == 201:
         data = response.json()
-        return data["lnurl"]  # Extract "lnurl" field from response data and return it
+        return data  # Extract "lnurl" field from response data and return it
     else:
         return None  # Return None if response status code is not 201
 
 
     
 def delete_lnurl_withdraw_link(the_hash, lnurl_id, invoice_key):
+    # Load environment variables
+    load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
+    LNURL = os.getenv("LNURL")
     # Construct URL for deleting the withdrawal link
-    url = f"{api.LNURL}/withdraw/api/v1/links/{the_hash}/{lnurl_id}"
+    url = f"{LNURL}/withdraw/api/v1/links/{the_hash}/{lnurl_id}"
 
     # Define headers for the DELETE request
     headers = {"X-Api-Key": invoice_key}
@@ -146,9 +149,9 @@ def delete_lnurl_withdraw_link(the_hash, lnurl_id, invoice_key):
         return False  # Return False if deletion is not successful
 
 
-def get_ln_wallet_balance(api_key):
+def get_ln_wallet_balance(api_key, LNURL):
     # Construct URL for retrieving LN wallet balance
-    url = api.LNURL + "/api/v1/wallet"
+    url = LNURL + "/api/v1/wallet"
 
     # Define headers for the GET request
     headers = {"X-Api-Key": api_key}
@@ -162,3 +165,46 @@ def get_ln_wallet_balance(api_key):
         return data["balance"]  # Return the balance from the response data
     else:
         return None  # Return None if retrieval is not successful
+    
+
+def check_withdraw_link_status(lnurl):
+    # Load environment variables
+    load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
+    invoice_key = os.getenv("invoice_key")  # Retrieve key from environment variable
+    LNURL = os.getenv("LNURL")
+    url = LNURL + '/withdraw/api/v1/links'
+    headers = {'X-Api-Key': invoice_key}
+  
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        links = response.json()
+
+        for link in links:
+            if link['lnurl'] == lnurl and link['used'] == 1:
+                return True
+        return False
+    else:
+        print('HTTP request failed with status code:', response.status_code)
+        return None
+
+def check_withdrawal_link():
+    # Load environment variables
+    load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
+    api_key = os.getenv("API_KEY")  # Retrieve API key from environment variable
+
+    url = "https://legend.lnbits.com/withdraw/api/v1/links"
+    headers = {
+        "X-Api-Key": api_key
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        withdrawal_links = response.json()
+        for link in withdrawal_links:
+            if link["used"] == 0 and link["uses"] == 1:
+                return {'lnurl': link["lnurl"], 'satoshi': link["max_withdrawable"]}
+        return False
+    else:
+        print(f"Failed to fetch withdrawal links. Status code: {response.status_code}")
+        return False
+
