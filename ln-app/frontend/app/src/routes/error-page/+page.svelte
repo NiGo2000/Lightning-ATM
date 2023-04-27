@@ -2,21 +2,21 @@
   import { onMount } from "svelte";
   import { getTotalPrice } from "../Container";
   import { goto } from "$app/navigation";
+  import { API_URL } from "../../lib/apiConfig";
 
-  let hasConnection = false;
 
-  // Check for a connection to the API every 3 seconds
+  // Check for a connection to the API every 1 seconds
   const interval = setInterval(async () => {
     try {
-      await getTotalPrice();
-      // If we reach this point, there is a connection to the API
+      const res = await fetch(`${API_URL}/total-price`);
+      if(res.ok){
+        goto("/")
+      }
       clearInterval(interval);
-      hasConnection = true;
-      goto("/");
     } catch (err) {
       console.error(err);
     }
-  }, 3000);
+  }, 1000);
 
   // Cleanup function to clear the interval when the component is unmounted
   onMount(() => {
@@ -32,6 +32,11 @@
   }
   
 </style>
+
+<svelte:head>
+	<title>Error</title>
+	<meta name="description" content="API Error Screen for ATM app" />
+</svelte:head>
 
 <div class="center">
   <div class="error-container">

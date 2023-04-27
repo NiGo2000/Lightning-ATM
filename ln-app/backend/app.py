@@ -80,5 +80,17 @@ def cancel():
     utilities.reset()
     return {'reset': True}
 
+@app.route('/delete-lnurl-withdraw-link')
+def delete_lnurl_withdraw_link():
+    lnurl = request.args.get('lnurl')
+
+    # The Lightning Invoice is generated here
+    lnurl_withdraw_link = utilities.delete_lnurl_withdraw_link(lnurl)
+    
+    if lnurl_withdraw_link is True:
+        return jsonify(True)
+    else:
+        return {'error': "lnurl is not deleted"}
+
 if __name__ == '__main__':
     app.run(debug=True)

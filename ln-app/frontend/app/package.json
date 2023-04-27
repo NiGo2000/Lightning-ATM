@@ -23,6 +23,7 @@
 	"type": "module",
 	"dependencies": {
 		"dotenv": "^16.0.3",
-		"qrcode-generator": "^1.4.4"
+		"qrcode-generator": "^1.4.4",
+		"svelte-routing": "^1.6.0"
 	}
 }

@@ -129,24 +129,43 @@ def create_lnurl_withdraw_link(withdraw_amount):
 
 
     
-def delete_lnurl_withdraw_link(the_hash, lnurl_id, invoice_key):
+def delete_lnurl_withdraw_link(lnurlw):
     # Load environment variables
     load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
-    LNURL = os.getenv("LNURL")
-    # Construct URL for deleting the withdrawal link
-    url = f"{LNURL}/withdraw/api/v1/links/{the_hash}/{lnurl_id}"
+    api_key = os.getenv("API_KEY")
+    invoice_key = os.getenv("invoice_key")
+    API_URL = os.getenv("LNURL")
 
-    # Define headers for the DELETE request
-    headers = {"X-Api-Key": invoice_key}
+    withdraw_id = get_withdraw_id(lnurlw, API_URL, invoice_key)
 
-    # Send DELETE request to LNURL API
-    response = requests.delete(url, headers=headers)
+    url = API_URL + '/withdraw/api/v1/links/' + withdraw_id['withdraw_id']
+    headers = {'X-Api-Key': api_key}
 
-    # Check if response status code indicates successful deletion (status code 200)
+    response = requests.get(url, headers=headers)
+
     if response.status_code == 200:
-        return True  # Return True if deletion is successful
+        return True
     else:
-        return False  # Return False if deletion is not successful
+        return False
+
+def get_withdraw_id(lnurl, API_URL, invoice_key):
+
+    url = API_URL + '/withdraw/api/v1/links'
+    headers = {'X-Api-Key': invoice_key}
+  
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        links = response.json()
+
+        for link in links:
+            if link['lnurl'] == lnurl:
+                return link['lnurl']
+        return False
+    else:
+        print('HTTP request failed with status code:', response.status_code)
+        return None
+    
 
 
 def get_ln_wallet_balance(api_key, LNURL):
@@ -192,8 +211,9 @@ def check_withdrawal_link():
     # Load environment variables
     load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
     api_key = os.getenv("API_KEY")  # Retrieve API key from environment variable
+    LNURL = os.getenv("LNURL")
 
-    url = "https://legend.lnbits.com/withdraw/api/v1/links"
+    url = LNURL + "/withdraw/api/v1/links"
     headers = {
         "X-Api-Key": api_key
     }

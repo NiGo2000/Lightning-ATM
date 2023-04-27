@@ -10,11 +10,11 @@
       .then(data => {
         if (data.reset) {
           // If 'reset' property is present in the response data
-          // Set a timeout of 2000 milliseconds (2 seconds)
+          // Set a timeout of 1000 milliseconds (1 seconds)
           // Then navigate to the '/' page
           setTimeout(() => {
             goto('/');
-          }, 2000);
+          }, 1000);
         }
       })
       .catch(error => {
@@ -23,7 +23,7 @@
   }
   
   onMount(async () => {
-    await getTotalPrice();
+    //await getTotalPrice();
     cancel();
   });
 </script>

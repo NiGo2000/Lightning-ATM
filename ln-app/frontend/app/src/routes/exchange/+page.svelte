@@ -34,15 +34,15 @@
     // Fetch the payment status from the API endpoint 
     const response = await fetch(`${API_URL}/check-payment?lnurl=${lnurl}`);
     const data = await response.json();  // Parse the response as JSON
-    if (data.payment === 'True') {  // Überprüfen Sie, ob das 'payment'-Eigenschaft den Wert 'True' hat
-      // Wenn das 'payment'-Eigenschaft in den Response-Daten den Wert 'True' hat
-      // Navigieren Sie zur '/goodbye'-Seite
+    if (data.payment === 'True') { 
+      // If  'payment' property in the response data has the value 'True'.
+      // Navigate to the '/goodbye' page
       goto("/goodbye");
     } else {
-      // Wenn das 'payment'-Eigenschaft in den Response-Daten den Wert 'False' hat
-      // Setzen Sie einen Timeout von 1000 Millisekunden (1 Sekunde)
-      // Rufen Sie dann erneut die 'checkPaymentStatus'-Funktion auf
-      setTimeout(checkPaymentStatus, 1000);
+      // If 'payment' property in the response data has the value 'False'.
+      // Set a timeout of 500 milliseconds (0.5 second).
+      // Then call the 'checkPaymentStatus' function again
+      setTimeout(checkPaymentStatus, 500);
     }
   }
 
@@ -78,7 +78,7 @@
     </div>
   {:else}
     <div class="center">
-      <p>Loading image...</p>
+      <p>Loading QR code...</p>
     </div>
   {/if}
 </main>

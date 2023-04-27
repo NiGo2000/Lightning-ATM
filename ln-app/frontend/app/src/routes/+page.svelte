@@ -14,7 +14,7 @@
     	interval = setInterval(async () => {
         	await getTotalPrice();  // Call a function to get the total price
         	checkTotalPrice();  // Call a function to check the total price
-    	}, 1000);  // Run the interval every 1000 milliseconds (1 second)
+    	}, 500);  // Run the interval every 500 milliseconds (0.5 second)
 
     	// Return a cleanup function to clear the interval on unmount
     	return () => clearInterval(interval);

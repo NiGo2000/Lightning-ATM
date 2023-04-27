@@ -18,10 +18,10 @@ else:
     script_path = os.path.join(os.environ["HOME"], script_name + ".py")
 
 # Path to the Svelte application
-svelte_path = os.path.abspath('front-end/app/')
+svelte_path = os.path.abspath('frontend/app/')
 
 # Paths to the Python files
-backend_path = os.path.abspath('back-end')
+backend_path = os.path.abspath('backend')
 app_path = os.path.join(backend_path, 'app.py')
 test_path = os.path.join(backend_path, 'test_money.py')
 
