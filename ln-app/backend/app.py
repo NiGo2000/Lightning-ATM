@@ -1,11 +1,8 @@
 from io import BytesIO
-import json
-import time
 from flask import Flask, request, send_file, jsonify
 from flask_cors import CORS
 import qrcode
 import utilities
-import requests
 
 app = Flask(__name__)
 CORS(app)
