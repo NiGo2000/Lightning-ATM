@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
   import { API_URL } from "../../lib/apiConfig";
-  import { totalEur, getTotalPrice } from "../Container";
+  import { totalEur, getTotalPrice } from "../../lib/Container";
   
   function cancel() {
     fetch(`${API_URL}/cancel`)

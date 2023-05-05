@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { getTotalPrice } from "../Container";
+  import { getTotalPrice } from "../../lib/Container";
   import { goto } from "$app/navigation";
   import { API_URL } from "$lib/apiConfig";
 

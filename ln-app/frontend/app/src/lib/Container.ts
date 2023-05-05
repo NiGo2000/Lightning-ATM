@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { API_URL } from "../lib/apiConfig";
+import { API_URL } from "./apiConfig";
 import { goto } from "$app/navigation";
 
 // stores Satoshi and Euro

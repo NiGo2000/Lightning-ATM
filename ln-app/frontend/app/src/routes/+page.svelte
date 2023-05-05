@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
     import { goto } from '$app/navigation';
-	import { totalEur, getTotalPrice, checkWithdrawalLink } from "./Container";
+	import { totalEur, getTotalPrice, checkWithdrawalLink } from "../lib/Container";
 
 	let interval: number;  // Declare a variable to store the interval ID
 
