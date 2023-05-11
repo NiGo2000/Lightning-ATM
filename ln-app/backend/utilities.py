@@ -5,8 +5,6 @@ import time
 
 import requests
 import api
-from PySide6.QtGui import QPixmap
-from PIL import ImageQt
 from pycoingecko import CoinGeckoAPI
 from dotenv import load_dotenv
 
@@ -47,22 +45,6 @@ def calculate_satoshi(eur_price):
     btc_price = get_btc_price()
     satoshi_price = int(eur_price * 1e8 / btc_price)
     return satoshi_price
-
-# generate qr code with invoice
-def generate_qr_code(invoice, qr_label):
-    # creation of the QR code
-    qr = qrcode.QRCode(version=None, box_size=2, border=4)
-    qr.add_data(invoice)
-    qr.make(fit=True)
-    qr_image = qr.make_image(fill_color="black", back_color="white")
-
-    # converting the PilImage to a QImage
-    qimage = ImageQt.ImageQt(qr_image)
-    # creating the QPixmap from the QImage
-    qr_pixmap = QPixmap.fromImage(qimage)
-
-    # display of the QR code in the GUI
-    qr_label.setPixmap(qr_pixmap)
 
 def get_total_eur():
     total_money = get_total_money()
