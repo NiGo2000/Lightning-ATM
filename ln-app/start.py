@@ -26,14 +26,14 @@ app_path = os.path.join(backend_path, 'app.py')
 test_path = os.path.join(backend_path, 'test_money.py')
 
 # Launch the Python files in new console windows
-subprocess.Popen(['start', 'cmd', '/k', 'python', app_path], cwd=backend_path, shell=True)
-subprocess.Popen(['start', 'cmd', '/k', 'python', test_path], cwd=backend_path, shell=True)
+subprocess.Popen(['x-terminal-emulator', '-e', 'python', app_path], cwd=backend_path)
+subprocess.Popen(['x-terminal-emulator', '-e', 'python', test_path], cwd=backend_path)
 
 # Launch the Svelte application in a new console window
-subprocess.Popen(['start', 'cmd', '/k', 'npm', 'run', 'dev'], cwd=svelte_path, shell=True, bufsize=1)
+subprocess.Popen(['x-terminal-emulator', '-e', 'npm', 'run', 'dev'], cwd=svelte_path)
 
 # Load environment variables
 load_dotenv()
 svelte_app_url = os.getenv("svelte_app_url")
 
-subprocess.Popen(['start', svelte_app_url], shell=True)
+subprocess.Popen(['xsg-open', svelte_app_url])
