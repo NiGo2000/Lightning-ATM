@@ -1,24 +1,47 @@
+import json
 import os
 import subprocess
 from dotenv import load_dotenv
+import time
 
-import os
-import sys
+# Load environment variables
+load_dotenv()
 
-script_name = "start"
+# Check if API_KEY and invoice_key are defined
+api_key = os.getenv("API_KEY")
+invoice_key = os.getenv("invoice_key")
 
-script_path = os.path.realpath(__file__)
+if api_key is None:
+    api_key = input("Please enter your API key: ")
+    # Save the API key in the .env file
+    with open(".env", "a") as f:
+        f.write(f"API_KEY={api_key}\n")
 
-# Check the operating system
-if sys.platform.startswith("win"):
-    # Windows, generate the path to the script in the user directory
-    script_path = os.path.join(os.environ["USERPROFILE"], script_name + ".py")
-else:
-    # Linux, generate the path to the script in the home directory
-    script_path = os.path.join(os.environ["HOME"], script_name + ".py")
+if invoice_key is None:
+    invoice_key = input("Please enter your invoice key: ")
+    # Save the invoice key in the .env file
+    with open(".env", "a") as f:
+        f.write(f"invoice_key={invoice_key}\n")
 
 # Path to the Svelte application
 svelte_path = os.path.abspath('frontend/app/')
+
+# Check if all required packages are installed
+package_json = os.path.join(svelte_path, 'package.json')
+with open(package_json, "r") as f:
+    package_data = json.load(f)
+required_packages = package_data.get('dependencies', {})
+missing_packages = []
+for package_name in required_packages:
+    try:
+        __import__(package_name)
+    except ImportError:
+        missing_packages.append(package_name)
+
+if missing_packages:
+    print(f"Missing packages: {missing_packages}")
+    # Install missing packages
+    subprocess.run(['npm', 'install'], cwd=svelte_path)
 
 # Paths to the Python files
 backend_path = os.path.abspath('backend')
@@ -32,8 +55,7 @@ subprocess.Popen(['x-terminal-emulator', '-e', 'python', test_path], cwd=backend
 # Launch the Svelte application in a new console window
 subprocess.Popen(['x-terminal-emulator', '-e', 'npm', 'run', 'dev'], cwd=svelte_path)
 
-# Load environment variables
-load_dotenv()
+time.sleep(5)
 svelte_app_url = os.getenv("svelte_app_url")
-
 subprocess.Popen(['xdg-open', svelte_app_url])
+
