@@ -36,4 +36,4 @@ subprocess.Popen(['x-terminal-emulator', '-e', 'npm', 'run', 'dev'], cwd=svelte_
 load_dotenv()
 svelte_app_url = os.getenv("svelte_app_url")
 
-subprocess.Popen(['xsg-open', svelte_app_url])
+subprocess.Popen(['xdg-open', svelte_app_url])
