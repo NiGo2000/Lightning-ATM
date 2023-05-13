@@ -1,7 +1,13 @@
 import datetime
 import os
-import qrcode
 import time
+import RPi.GPIO as GPIO
+
+# Set up GPIO pins
+coin_pin = 10
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(coin_pin, GPIO.IN)
+
 
 import requests
 import api
@@ -46,13 +52,60 @@ def calculate_satoshi(eur_price):
     satoshi_price = int(eur_price * 1e8 / btc_price)
     return satoshi_price
 
-def get_total_eur():
-    total_money = get_total_money()
-    return total_money
+## test
+#def get_total_eur():
+#    total_money = get_total_money()
+#    return total_money
 
+#def reset():
+#    reset_total_money()
+#    return
+
+# Initialize array to store Euros
+euro_array = []
+
+# Function to get pulse count
+def get_pulse_count():
+    pulse_count = 0
+    while True:
+        if GPIO.input(coin_pin) == GPIO.LOW:
+            pulse_count += 1
+            while GPIO.input(coin_pin) == GPIO.LOW:
+                pass  # Wait for coin to be removed from coin slot
+            return pulse_count
+
+# Function to recognize coin based on pulse count
+def recognize_coin(pulse_count):
+    if pulse_count == 2:
+        return 0.05
+    elif pulse_count == 3:
+        return 0.10
+    elif pulse_count == 4:
+        return 0.20
+    elif pulse_count == 5:
+        return 0.50
+    elif pulse_count == 6:
+        return 1.00
+    elif pulse_count == 7:
+        return 2.00
+    else:
+        return 0.00
+
+def add_coin():
+    global euro_array
+    pulse_count = get_pulse_count()
+    coin_value = recognize_coin(pulse_count)
+    euro_array += coin_value
+
+# Function to get total Euros
+def get_total_eur():
+    total_eur = sum(euro_array)
+    return total_eur
+
+# Function to reset array
 def reset():
-    reset_total_money()
-    return
+    global euro_array
+    euro_array = []
 
 def create_lnurl_withdraw_link(withdraw_amount):
     # Load environment variables
