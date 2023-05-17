@@ -1,11 +1,10 @@
 import json
 import os
 import subprocess
-from dotenv import load_dotenv
 import time
+from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+load_dotenv('.env')
 
 # Check if API_KEY and invoice_key are defined
 api_key = os.getenv("API_KEY")

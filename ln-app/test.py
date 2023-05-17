@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 
-coin_pin = 10
+coin_pin = 6
 total_eur = 0
 
 def get_pulse_count():
