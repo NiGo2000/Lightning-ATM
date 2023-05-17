@@ -2,6 +2,11 @@ import RPi.GPIO as GPIO
 
 coin_pin = 6
 
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup(coin_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+
 def get_pulse_count():
     pulse_count = 0
     while True:
