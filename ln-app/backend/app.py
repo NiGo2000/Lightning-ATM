@@ -90,16 +90,5 @@ def delete_lnurl_withdraw_link():
     else:
         return {'error': "lnurl is not deleted"}
 
-def coin_insertion_loop():
-    while True:
-        pulse_count = utilities.get_pulse_count()
-        coin_value = utilities.recognize_coin(pulse_count)
-        if coin_value != "Unbekannte Münze":
-            utilities.add_coin(coin_value)
-
 if __name__ == '__main__':
-    coin_insertion_thread = threading.Thread(target=coin_insertion_loop)
-    coin_insertion_thread.daemon = True
-    coin_insertion_thread.start()
-
     app.run(debug=True)

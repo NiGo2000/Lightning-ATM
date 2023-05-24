@@ -14,6 +14,7 @@ global coin_value
 counting = 0
 coin_value = 0
 
+# Coin value calculation function
 def calculate_coin_value(pulse_count):
     if pulse_count == 2:
         return 0.05
@@ -30,10 +31,12 @@ def calculate_coin_value(pulse_count):
     else:
         return 0
 
+# Coin value reset function
 def reset_coin_value():
     global coin_value
     coin_value = 0
 
+# First pulse detection function
 def firstFunction():
     global counter
     global ts
@@ -50,12 +53,14 @@ def firstFunction():
             print(f"Pulse coming! {counter}")
             ts = time.time()
 
+# Second function for processing the pulse detection
 def secondFunction():
     global count
     global counting
     global counter
+    global coin_value
     while True:
-        cts = ts + 2
+        cts = ts + 0.1
         if cts < time.time():
             print(f"Counting looks like finished with {counter} pulses")
             count = 0
@@ -69,27 +74,14 @@ def secondFunction():
             print("Ready for the next coin")
             time.sleep(1)
 
-
-def thirdFunction():
-    while True:
-        if counting == 0:
-            reset_coin_value()
-            global ts
-            ts = time.time()
-            time.sleep(1)
-
-
 try:
     t1 = Thread(target=firstFunction)
     t2 = Thread(target=secondFunction)
-    t3 = Thread(target=thirdFunction)
 
     t1.start()
     t2.start()
-    t3.start()
 
 except KeyboardInterrupt:
     t1.stop()
     t2.stop()
-    t3.stop()
     GPIO.cleanup()

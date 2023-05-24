@@ -45,11 +45,17 @@ if missing_packages:
 # Paths to the Python files
 backend_path = os.path.abspath('backend')
 app_path = os.path.join(backend_path, 'app.py')
-test_path = os.path.join(backend_path, 'test_money.py')
+
+# test without coin accepter
+# coin_acceptor = os.path.join(backend_path, 'test_money.py')
+
+# coin accepter
+coin_acceptor = os.path.join(backend_path, 'coin_counter.py')
+
 
 # Launch the Python files in new console windows
 subprocess.Popen(['x-terminal-emulator', '-e', 'python', app_path], cwd=backend_path)
-subprocess.Popen(['x-terminal-emulator', '-e', 'python', test_path], cwd=backend_path)
+subprocess.Popen(['x-terminal-emulator', '-e', 'python', coin_acceptor], cwd=backend_path)
 
 # Launch the Svelte application in a new console window
 subprocess.Popen(['x-terminal-emulator', '-e', 'npm', 'run', 'dev'], cwd=svelte_path)
