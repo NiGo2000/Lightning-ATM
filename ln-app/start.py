@@ -49,9 +49,7 @@ app_path = os.path.join(backend_path, 'app.py')
 # test without coin accepter
 # coin_acceptor = os.path.join(backend_path, 'test_money.py')
 
-# coin accepter
 coin_acceptor = os.path.join(backend_path, 'coin_counter.py')
-
 
 # Launch the Python files in new console windows
 subprocess.Popen(['x-terminal-emulator', '-e', 'python', app_path], cwd=backend_path)

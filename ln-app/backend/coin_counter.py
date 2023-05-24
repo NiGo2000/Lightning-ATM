@@ -74,12 +74,18 @@ def secondFunction():
             print("Ready for the next coin")
             time.sleep(1)
 
+def get_cash():
+    global coin_value
+    return coin_value
+
 try:
     t1 = Thread(target=firstFunction)
     t2 = Thread(target=secondFunction)
+    t3 = Thread(target=get_cash)
 
     t1.start()
     t2.start()
+    t3.start()
 
 except KeyboardInterrupt:
     t1.stop()

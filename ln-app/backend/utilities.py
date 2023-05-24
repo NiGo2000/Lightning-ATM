@@ -1,7 +1,7 @@
 import datetime
 import os
 import time
-from coin_counter import calculate_coin_value, reset_coin_value
+from coin_counter import get_cash, reset_coin_value
 
 
 import requests
@@ -59,7 +59,7 @@ def calculate_satoshi(eur_price):
 # Initialize array to store Euros
 
 def get_total_eur():
-    total_money = calculate_coin_value()
+    total_money = get_cash()
     return total_money
 
 def reset():
