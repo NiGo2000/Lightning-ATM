@@ -47,8 +47,6 @@ def firstFunction():
             GPIO.wait_for_edge(coin_pin, GPIO.FALLING)
             counting = 1
             counter += 1
-            coin_value += calculate_coin_value(counter)
-            print("coin_value", coin_value)
             print(f"Pulse coming! {counter}")
             ts = time.time()
 
@@ -63,18 +61,8 @@ def secondFunction():
             count = 0
             counting = 0
             print("We process accepted the coins")
-
-            # urllib2.urlopen is just for testing in my case, you can do whatever you want here, i just used this to test the functions
-            if counter == 1:
-                print("Counter 1")
-            if counter == 2:
-                print("Counter 2")
-            if counter == 3:
-                print("Counter 3")
-            if counter == 4:
-                print("Counter 4")
-            if counter == 5:
-                print("Counter 5")
+            coin_value += calculate_coin_value(counter)
+            print(f"Coin value: {coin_value} €")
 
             counter = 0
             count = 1
