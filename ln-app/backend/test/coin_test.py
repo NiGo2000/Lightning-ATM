@@ -35,10 +35,11 @@ def reset_coin_value():
     coin_value = 0
 
 def firstFunction():
-    global counter
+    global count
     global ts
     global counting
     global coin_value
+    global counter  # Änderung hier: Variable als global definieren
     count = 1
     counter = 0
     ts = time.time()
