@@ -1,7 +1,7 @@
 import datetime
 import os
 import time
-from coin_counter import get_cash, reset_coin_value
+from coin import get_cash, reset_coin_value
 
 
 import requests

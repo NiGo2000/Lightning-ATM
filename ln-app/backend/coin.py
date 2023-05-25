@@ -1,15 +1,16 @@
-import threading
+from asyncio import Lock
 import RPi.GPIO as GPIO
+import time
+from threading import Thread, Lock
+
+coin_pin = 15
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(coin_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 coin_value = 0
-lock = threading.Lock()
-pulse_pin = 15
-
-# Setup GPIO
-GPIO.setmode(GPIO.BCM)
-
-# Setup Pulse Pin
-GPIO.setup(pulse_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+pulse_count = 0
+lock = Lock()
 
 # Coin value calculation function
 def calculate_coin_value(pulse_count):
@@ -28,37 +29,42 @@ def calculate_coin_value(pulse_count):
     else:
         return 0
 
-# Function to get the current cash
 def get_cash():
     global coin_value
-    return coin_value
+    with lock:
+        return coin_value
 
-# Function to reset coin_value to 0
-def reset_cash():
+# Coin value reset function
+def reset_coin_value():
     global coin_value
-    coin_value = 0
+    with lock:
+        coin_value = 0
 
-# Function to read pulses
-def read_pulse():
-    pulse_count = 0
-
-    # Wait for pulse to start (falling edge)
-    GPIO.wait_for_edge(pulse_pin, GPIO.FALLING)
-
-    # Count pulses
-    while GPIO.input(pulse_pin) == GPIO.LOW:
-        pulse_count += 1
-
-    return pulse_count
-
-# Function to process pulses and update coin_value
-def process_pulse():
+# Pulse detection function
+def pulse_detection():
+    global pulse_count
     while True:
-        pulse_count = read_pulse()
+        GPIO.wait_for_edge(coin_pin, GPIO.FALLING)
         with lock:
-            coin_value += calculate_coin_value(pulse_count)
+            pulse_count += 1
 
-# Start the pulse processing thread
-pulse_thread = threading.Thread(target=process_pulse)
-pulse_thread.daemon = True
-pulse_thread.start()
+# Coin value conversion function
+def coin_value_conversion():
+    global pulse_count
+    global coin_value
+    while True:
+        time.sleep(1)  # Adjust the sleep interval as needed
+        with lock:
+            if pulse_count > 0:
+                coin_value += calculate_coin_value(pulse_count)
+                print(f"Coins detected: {pulse_count}")
+                print(f"Current cash: {coin_value}")
+                pulse_count = 0
+
+# Start the pulse detection thread
+t1 = Thread(target=pulse_detection)
+t1.start()
+
+# Start the coin value conversion thread
+t2 = Thread(target=coin_value_conversion)
+t2.start()
