@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 import { API_URL } from "./apiConfig";
 import { goto } from "$app/navigation";
+import { checkInternetConnection } from './NetworkUtils';
 
 // stores Satoshi and Euro
 export const totalSatoshi = writable(0);
@@ -55,4 +56,10 @@ export async function checkWithdrawalLink(){
   }
 }
 
-
+export async function redirectOnError() {
+  const isConnected = await checkInternetConnection();
+  if (!isConnected) {
+    await fetch(`${API_URL}/cancel`);
+    goto("/error-page");
+  }
+}

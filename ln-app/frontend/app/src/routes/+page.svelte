@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { onMount } from "svelte";
     import { goto } from '$app/navigation';
-	import { totalEur, getTotalPrice, checkWithdrawalLink } from "../lib/Container";
+	import { totalEur, getTotalPrice, checkWithdrawalLink, redirectOnError } from "../lib/Container";
 
 	let interval: number;  // Declare a variable to store the interval ID
 
 	onMount(async () => {
+		redirectOnError();
 		const withdrawalLink = await checkWithdrawalLink(); // Call a function to check the withdrawal link on mount
         if (withdrawalLink !== false) { // If withdrawal link is not false, navigate to the '/exchange' page with query params
             goto(`/exchange`);
