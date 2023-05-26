@@ -9,9 +9,10 @@ load_dotenv('.env')
 # Check if API_KEY and invoice_key are defined
 api_key = os.getenv("API_KEY")
 invoice_key = os.getenv("invoice_key")
+coin_pin = os.getenv("coin_pin")
 
 if api_key is None:
-    api_key = input("Please enter your API key: ")
+    api_key = input("Please enter your Admin Key: ")
     # Save the API key in the .env file
     with open(".env", "a") as f:
         f.write(f"API_KEY={api_key}\n")
@@ -21,6 +22,12 @@ if invoice_key is None:
     # Save the invoice key in the .env file
     with open(".env", "a") as f:
         f.write(f"invoice_key={invoice_key}\n")
+
+if coin_pin is None:
+    coin_pin = input("Please enter your coin pin for the coin acceptor: ")
+    # Save the invoice key in the .env file
+    with open(".env", "a") as f:
+        f.write(f"coin_pin={coin_pin}\n")
 
 # Path to the Svelte application
 svelte_path = os.path.abspath('frontend/app/')
