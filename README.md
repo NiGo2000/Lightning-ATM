@@ -40,16 +40,16 @@ To set up the Lightning-ATM, please follow the steps outlined below:
    
    These commands will change the directory to ln-app and install the required Python dependencies specified in the requirements.txt file.
 
- 4. **Configure Coin Checker GPIO**
+5. **Configure Coin Checker GPIO**
 
-   Check if the coin checker on the Raspberry Pi is connected to GPIO 15. If it is not connected to GPIO 15, you need to modify the backend/coin.py file. Open the file and locate the following line:
+   Check if the coin checker on the Raspberry Pi is connected to GPIO 15. If it is not connected to GPIO 15, you need to modify the backend/coin.py file. Open the file and    locate the following line:
 
    ```python
    coin_pin = 15
    ```
    If your coin checker is connected to a different GPIO pin, change the value of coin_pin to the corresponding GPIO number.
 
- 4. **Start the Program**
+6. **Start the Program**
 
    Once you have completed the previous steps and are inside the ln-app folder in the console, you can start the Lightning-ATM program by executing the following command:
 
@@ -58,4 +58,4 @@ To set up the Lightning-ATM, please follow the steps outlined below:
    ```
    This command will initiate the program, allowing you to interact with the Lightning-ATM system.
 
-   Congratulations! You have successfully installed and set up the Lightning-ATM on your Raspberry Pi. You can now insert coins ranging from 5 cents to 2 euros and exchange them for satoshis using the Lightning Network. Enjoy!
+   Congratulations! You have successfully installed and set up the Lightning-ATM on your Raspberry Pi. You can now insert coins ranging from 5 cents to 2 euros and exchange    them for satoshis using the Lightning Network. Enjoy!
