@@ -9,25 +9,20 @@ load_dotenv('.env')
 # Check if API_KEY and invoice_key are defined
 api_key = os.getenv("API_KEY")
 invoice_key = os.getenv("invoice_key")
-coin_pin = os.getenv("coin_pin")
 
 if api_key is None:
     api_key = input("Please enter your Admin Key: ")
     # Save the API key in the .env file
     with open(".env", "a") as f:
+        f.write("\n")
         f.write(f"API_KEY={api_key}\n")
 
 if invoice_key is None:
     invoice_key = input("Please enter your invoice key: ")
     # Save the invoice key in the .env file
     with open(".env", "a") as f:
+        f.write("\n")
         f.write(f"invoice_key={invoice_key}\n")
-
-if coin_pin is None:
-    coin_pin = input("Please enter your coin pin for the coin acceptor: ")
-    # Save the invoice key in the .env file
-    with open(".env", "a") as f:
-        f.write(f"coin_pin={coin_pin}\n")
 
 # Path to the Svelte application
 svelte_path = os.path.abspath('frontend/app/')
@@ -53,14 +48,12 @@ if missing_packages:
 backend_path = os.path.abspath('backend')
 app_path = os.path.join(backend_path, 'app.py')
 
-# test without coin accepter
-# coin_acceptor = os.path.join(backend_path, 'test_money.py')
-
-coin_acceptor = os.path.join(backend_path, 'coin.py')
-
 # Launch the Python files in new console windows
 subprocess.Popen(['x-terminal-emulator', '-e', 'python', app_path], cwd=backend_path)
-subprocess.Popen(['x-terminal-emulator', '-e', 'python', coin_acceptor], cwd=backend_path)
+
+# test without coin accepter
+# coin_acceptor_test = os.path.join(backend_path, 'test_money.py')
+# subprocess.Popen(['x-terminal-emulator', '-e', 'python', coin_acceptor_test], cwd=backend_path)
 
 # Launch the Svelte application in a new console window
 subprocess.Popen(['x-terminal-emulator', '-e', 'npm', 'run', 'dev'], cwd=svelte_path)

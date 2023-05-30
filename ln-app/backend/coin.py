@@ -2,11 +2,8 @@ import os
 import RPi.GPIO as GPIO
 import time
 from threading import Thread, Lock
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
-coin_pin = os.getenv("coin_pin")
+coin_pin = 15
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(coin_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
