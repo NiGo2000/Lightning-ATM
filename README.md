@@ -25,7 +25,6 @@ To set up the Lightning-ATM, please follow the steps outlined below:
    Clone the Lightning-ATM project repository from GitHub. Open the console and navigate to the desired location, then execute the following command:
 
    ```shell
-   Copy code
    git clone <repository_url>
    ```
    Replace <repository_url> with the URL of the GitHub repository you want to clone.
@@ -35,7 +34,6 @@ To set up the Lightning-ATM, please follow the steps outlined below:
    Navigate to the ln-app folder of the cloned project in the console, then execute the following commands:
 
    ```shell
-   Copy code
    cd ln-app
    pip install -r backend/requirements.txt
    ```
