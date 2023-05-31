@@ -1,17 +1,19 @@
 <script lang="ts">
 	import { onMount } from "svelte";
     import { goto } from '$app/navigation';
-	import { totalEur, getTotalPrice, checkWithdrawalLink } from "../lib/Container";
+	import { totalEur, getTotalPrice, checkWithdrawalLink, checkInternetConnection } from "../lib/Container";
 
 	let interval: number;  // Declare a variable to store the interval ID
 
 	onMount(async () => {
+		await checkInternetConnection(); // Call a function to check if we have a internet connection
 		const withdrawalLink = await checkWithdrawalLink(); // Call a function to check the withdrawal link on mount
         if (withdrawalLink !== false) { // If withdrawal link is not false, navigate to the '/exchange' page with query params
             goto(`/exchange`);
         }
     	// Set up a recurring interval function on mount
     	interval = setInterval(async () => {
+			await checkInternetConnection(); 
         	await getTotalPrice();  // Call a function to get the total price
         	checkTotalPrice();  // Call a function to check the total price
     	}, 500);  // Run the interval every 500 milliseconds (0.5 second)

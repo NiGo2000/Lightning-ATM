@@ -7,10 +7,12 @@
   // Check for a connection to the API every 1 seconds
   const interval = setInterval(async () => {
     try {
+      if (navigator.onLine) {
       const res = await fetch(`${API_URL}/total-price`);
-      if(res.ok){
-        goto("/")
+      if (res.ok) {
+        goto("/");
       }
+      } 
       clearInterval(interval);
     } catch (err) {
       console.error(err);

@@ -1,12 +1,13 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
-    import { totalSatoshi, totalEur, getTotalPrice } from "../../lib/Container";
+    import { totalSatoshi, totalEur, getTotalPrice, checkInternetConnection } from "../../lib/Container";
   
     // Interval for updating the stores
     let interval: number;
     onMount(() => {
       interval = setInterval(() => {
+        checkInternetConnection();
         getTotalPrice();
       }, 1000);
   
@@ -19,6 +20,7 @@
     }
   
     function handleExchange() {
+      checkInternetConnection();
       goto('/exchange');
     }
 </script>

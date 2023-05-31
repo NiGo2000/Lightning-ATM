@@ -54,3 +54,19 @@ export async function checkWithdrawalLink(){
       return false;
   }
 }
+
+export async function checkInternetConnection(){
+  try {
+    // Check internet connection
+    if (!navigator.onLine) {
+      // Redirect to error page
+      goto("/error-page");
+
+      fetch(`${API_URL}/cancel`);
+      return;
+    }
+  } catch (error) {
+    console.error(`Error: ${error}`);
+    return false;
+  }
+}
