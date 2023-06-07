@@ -10,7 +10,7 @@ def add_coin(coin_value):
         f.write(str(total_money))
 
 
-def get_total_money():
+def get_cash():
     global total_money
     try:
         with open(total_money_file, 'r') as f:
@@ -19,14 +19,14 @@ def get_total_money():
         total_money = 0
     return total_money
 
-def reset_total_money():
+def reset_coin_value():
     global total_money
     total_money = 0
     with open(total_money_file, 'w') as f:
         f.write(str(total_money))
 
 def reset():
-    reset_total_money()
+    reset_coin_value()
     print("Total money has been reset to 0.")
 
 if __name__ == "__main__":
@@ -50,6 +50,6 @@ if __name__ == "__main__":
             continue
 
         add_coin(coin_value)
-        total_money_1 = get_total_money()
+        total_money_1 = get_cash()
 
         print(f"Gesamt-Einzahlungsbetrag: {total_money_1:.2f} €")
